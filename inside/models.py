@@ -16,13 +16,13 @@ class InText(models.Model):
     text = models.TextField()
 
 class InPicture(models.Model):
-    picture = models.ImageField()
+    picture = models.ImageField(upload_to='picture/') #업로드 경로
 
 class InRecord(models.Model):
-    picture = models.FileField()
+    record = models.FileField(upload_to='record/')
 
 class InVideo(models.Model):
-    picture = models.FileField()
+    video = models.FileField(upload_to='video/')
 
 class InComment(models.Model):
     content = models.TextField()

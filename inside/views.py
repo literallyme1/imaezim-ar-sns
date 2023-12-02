@@ -48,15 +48,24 @@ def addMemo(request):  #새로운 메모 저장하기
             in_text.save()
             saved_id = in_text.id  #저장된 id(PK)를 Post의 objectNumber에 저장
         elif data.get('memoType') == 'B':
-            in_picture = InPicture(text=data.get('memo_content'))
+            file = request.FILES['memo_content']
+            if not file.name.lower().endswith(('.png', '.jpg', '.jpeg')): #파일이 이미지 확장자인지 확인
+                return JsonResponse({'status': 'error', 'message': 'Not an image extension'})
+            in_picture = InPicture.objects.create(picture=file)
             in_picture.save()
             saved_id = in_picture.id
         elif data.get('memoType') == 'C':
-            in_record = InRecord(text=data.get('memo_content'))
+            file = request.FILES['memo_content']
+            if not file.name.lower().endswith(('.m4a', '.mp3')): #파일이 음성 확장자인지 확인
+                return JsonResponse({'status': 'error', 'message': 'Not an audio extension'})
+            in_record = InRecord.objects.create(record=file)
             in_record.save()
             saved_id = in_record.id
         elif data.get('memoType') == 'D':
-            in_record = InRecord(text=data.get('memo_content'))
+            file = request.FILES['memo_content']
+            if not file.name.lower().endswith(('.mp4')): #파일이 영상 확장자인지 확인
+                return JsonResponse({'status': 'error', 'message': 'Not an video extension'})
+            in_record = InVideo.objects.create(video=file)
             in_record.save()
             saved_id = in_record.id
         else:
@@ -67,7 +76,6 @@ def addMemo(request):  #새로운 메모 저장하기
             user_instance = User.objects.get(id=int(data.get('userId')))
         except ObjectDoesNotExist:
             return JsonResponse({'status': 'error', 'message': 'No member information'})   #user 정보가 존재하지 않을 때 오류 메시지
-
         #post 데이터 저장
         try:
             in_post = InPost(

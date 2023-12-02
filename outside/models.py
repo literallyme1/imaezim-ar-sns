@@ -17,13 +17,13 @@ class OutText(models.Model):
     text = models.TextField()
 
 class OutPicture(models.Model):
-    picture = models.ImageField()
+    picture = models.ImageField(upload_to='picture/') #업로드 경로
 
 class OutRecord(models.Model):
-    picture = models.FileField()
+    record = models.FileField(upload_to='record/')
 
 class OutVideo(models.Model):
-    picture = models.FileField()
+    video = models.FileField(upload_to='video/')
 
 class OutComment(models.Model):
     content = models.TextField()

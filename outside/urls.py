@@ -15,3 +15,4 @@ urlpatterns = [
     path('memoInfo/', views.MemoInfo),  #메모 정보 url -> post 데이터와 각 메모타입에 따라 내용 추가해서 보여줌   #메모 정보 모두 받아오기
     path('addMemo/', views.addMemo),  #메모 저장 url
 ]
+

@@ -48,17 +48,26 @@ def addMemo(request):  #새로운 메모 저장하기
             out_text.save()
             saved_id = out_text.id  #저장된 id(PK)를 Post의 objectNumber에 저장
         elif data.get('memoType') == 'B':
-            out_picture = OutPicture(text=data.get('memo_content'))
+            file = request.FILES['memo_content']
+            if not file.name.lower().endswith(('.png', '.jpg', '.jpeg')): #파일이 이미지 확장자인지 확인
+                return JsonResponse({'status': 'error', 'message': 'Not an image extension'})
+            out_picture = OutPicture.objects.create(picture=file)
             out_picture.save()
             saved_id = out_picture.id
         elif data.get('memoType') == 'C':
-            out_record = OutRecord(text=data.get('memo_content'))
+            file = request.FILES['memo_content']
+            if not file.name.lower().endswith(('.m4a', '.mp3')): #파일이 음성 확장자인지 확인
+                return JsonResponse({'status': 'error', 'message': 'Not an audio extension'})
+            out_record = OutRecord.objects.create(record=file)
             out_record.save()
             saved_id = out_record.id
         elif data.get('memoType') == 'D':
-            out_record = OutRecord(text=data.get('memo_content'))
-            out_record.save()
-            saved_id = out_record.id
+            file = request.FILES['memo_content']
+            if not file.name.lower().endswith(('.mp4')): #파일이 영상 확장자인지 확인
+                return JsonResponse({'status': 'error', 'message': 'Not an video extension'})
+            out_video = OutVideo.objects.create(video=file)
+            out_video.save()
+            saved_id = out_video.id
         else:
             return JsonResponse({'status': 'error', 'message': 'Invalid memoType'})
 
@@ -67,7 +76,6 @@ def addMemo(request):  #새로운 메모 저장하기
             user_instance = User.objects.get(id=int(data.get('userId')))
         except ObjectDoesNotExist:
             return JsonResponse({'status': 'error', 'message': 'No member information'})   #user 정보가 존재하지 않을 때 오류 메시지
-
         #post 데이터 저장
         try:
             out_post = OutPost(
@@ -86,6 +94,7 @@ def addMemo(request):  #새로운 메모 저장하기
             return JsonResponse({'status': 'error', 'message': error_message}) #post 저장 실패 시 오류 메시지
 
         return JsonResponse({'status': 'success'}) #저장 성공시 메시지
+
 
 
 

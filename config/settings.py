@@ -139,3 +139,22 @@ STATIC_URL = 'static/'
 # https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+MAX_UPLOAD_SIZE = 5000000 #파일 업로드 가능 크기
+
+ALLOWED_FILE_TYPES = [
+    'image/png',
+    'image/jpg',
+    'image/jpeg',
+    'video/mp4',
+    'video/quicktime',
+    'video/x-msvideo',
+    'video/x-ms-wmv',
+    'audio/mpeg',  # MP3
+    'audio/wav',  # WAV
+    'audio/x-wav',  # WAV
+    'audio/mp4',  # M4A
+]
+
+MEDIA_ROOT = BASE_DIR/'media'
+MEDIA_URL = '/media/'

@@ -57,6 +57,6 @@ class InMemoInfoSerializer(serializers.ModelSerializer):  #메모의 타입에 �
         elif obj.memoType == 'D':  # video
             video_instance = InVideo.objects.filter(id=obj.objectNumber).first()
             if video_instance:
-                serializer = InRecordSerializer(video_instance)
+                serializer = InVideoSerializer(video_instance)
                 return serializer.data
         return None
