@@ -36,7 +36,7 @@ class OutMemoInfoSerializer(serializers.ModelSerializer):  #메모의 타입에 
 
     class Meta:
         model = OutPost
-        fields = ('id', 'userId', 'date', 'memoType', 'objectNumber', 'latitude', 'longitude', 'altitude', 'eunRotation', 'open', 'memo_content')
+        fields = ('id', 'userId', 'date', 'memoType', 'objectNumber', 'latitude', 'longitude', 'altitude', 'eunRotationX', 'eunRotationY','eunRotationZ','eunRotationW','open', 'memo_content')
 
     def get_memo_content(self, obj):
         if obj.memoType == 'A':    #text
