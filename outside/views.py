@@ -37,7 +37,19 @@ def MemoInfo(request):  #메모 정보 모두 받아오기
     if request.method == 'GET':
         queryset = OutPost.objects.all()
         serializer_class = OutMemoInfoSerializer(queryset, many=True)
-        return JsonResponse(serializer_class.data, safe=False)
+
+        # 직렬화된 데이터를 Python 딕셔너리로 변환
+        serialized_data = serializer_class.data
+
+        # 각 객체에 대해 userId의 nickname을 추가
+        for item in serialized_data:
+            user_id = item['userId']
+            user_instance = User.objects.get(pk=user_id)
+            nickname = user_instance.nickname
+            item['nickname'] = nickname
+
+
+        return JsonResponse(serialized_data, safe=False)
 
 def addMemo(request):  #새로운 메모 저장하기
     if request.method == 'POST':
@@ -58,14 +70,14 @@ def addMemo(request):  #새로운 메모 저장하기
             file = request.FILES['memo_content']
             if not file.name.lower().endswith(('.m4a', '.mp3')): #파일이 음성 확장자인지 확인
                 return JsonResponse({'status': 'error', 'message': 'Not an audio extension'})
-            out_record = OutRecord.objects.create(record=file)
+            out_record = OutRecord.objects.create(video=file)
             out_record.save()
             saved_id = out_record.id
         elif data.get('memoType') == 'D':
             file = request.FILES['memo_content']
             if not file.name.lower().endswith(('.mp4')): #파일이 영상 확장자인지 확인
                 return JsonResponse({'status': 'error', 'message': 'Not an video extension'})
-            out_video = OutVideo.objects.create(video=file)
+            out_video = OutVideo.objects.create(record=file)
             out_video.save()
             saved_id = out_video.id
         else:
@@ -85,7 +97,11 @@ def addMemo(request):  #새로운 메모 저장하기
                 latitude=data.get('latitude'),
                 longitude=data.get('longitude'),
                 altitude=data.get('altitude'),
-                eunRotation=data.get('eunRotation'),
+                # eunRotation=data.get('eunRotation'),
+                eunRotationX=data.get('eunRotationX'),
+                eunRotationY=data.get('eunRotationY'),
+                eunRotationZ=data.get('eunRotationZ'),
+                eunRotationW=data.get('eunRotationW'),
                 open=data.get('open'),
             )
             out_post.save()
