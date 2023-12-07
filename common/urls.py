@@ -8,4 +8,5 @@ router.register('user_drf', views.UserView_drf)
 
 urlpatterns = [
     path('', include(router.urls)),
+    path('user/', views.UserView),
 ]

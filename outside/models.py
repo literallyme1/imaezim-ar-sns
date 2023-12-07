@@ -4,7 +4,7 @@ from common.models import User
 # Create your models here.
 class OutPost(models.Model):
     userId = models.ForeignKey(User, on_delete=models.CASCADE)
-    date = models.DateField(auto_now_add=True)  #날짜 자동으로 현재시각 저장
+    date = models.DateTimeField(auto_now_add=True)  #날짜 자동으로 현재시각 저장
     memoType = models.CharField(max_length=1) #A:text  B:picture  C:record   D:video
     objectNumber = models.IntegerField()  #Text, Picture, Record, Video의 id와 동일한 값으로 넣어주기
     latitude = models.FloatField()  #위도

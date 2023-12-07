@@ -36,7 +36,7 @@ class InMemoInfoSerializer(serializers.ModelSerializer):  #메모의 타입에 �
 
     class Meta:
         model = InPost
-        fields = ('id', 'anchorId', 'userId', 'date', 'memoType', 'objectNumber', 'latitude', 'longitude', 'open', 'memo_content')
+        fields = ('id', 'anchorId', 'userId', 'date', 'memoType', 'objectNumber', 'latitude', 'longitude', 'open', 'detailAddr', 'memo_content')
 
     def get_memo_content(self, obj):
         if obj.memoType == 'A':    #text
