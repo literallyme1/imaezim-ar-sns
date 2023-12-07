@@ -86,6 +86,7 @@ def addMemo(request):  #새로운 메모 저장하기
                 latitude=data.get('latitude'),
                 longitude=data.get('longitude'),
                 open=data.get('open'),
+                detailAddr=data.get('detailAddr'),
             )
             in_post.save()
         except IntegrityError as e:

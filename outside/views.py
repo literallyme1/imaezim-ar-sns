@@ -47,9 +47,7 @@ def MemoInfo(request):  #메모 정보 모두 받아오기
             user_instance = User.objects.get(pk=user_id)
             nickname = user_instance.nickname
             item['nickname'] = nickname
-
-
-        return JsonResponse(serialized_data, safe=False)
+    return JsonResponse(serialized_data, safe=False)
 
 def addMemo(request):  #새로운 메모 저장하기
     if request.method == 'POST':
@@ -70,14 +68,14 @@ def addMemo(request):  #새로운 메모 저장하기
             file = request.FILES['memo_content']
             if not file.name.lower().endswith(('.m4a', '.mp3')): #파일이 음성 확장자인지 확인
                 return JsonResponse({'status': 'error', 'message': 'Not an audio extension'})
-            out_record = OutRecord.objects.create(video=file)
+            out_record = OutRecord.objects.create(record=file)
             out_record.save()
             saved_id = out_record.id
         elif data.get('memoType') == 'D':
             file = request.FILES['memo_content']
             if not file.name.lower().endswith(('.mp4')): #파일이 영상 확장자인지 확인
                 return JsonResponse({'status': 'error', 'message': 'Not an video extension'})
-            out_video = OutVideo.objects.create(record=file)
+            out_video = OutVideo.objects.create(video=file)
             out_video.save()
             saved_id = out_video.id
         else:
@@ -111,7 +109,6 @@ def addMemo(request):  #새로운 메모 저장하기
 
         return JsonResponse({'status': 'success'}) #저장 성공시 메시지
 
-
 def get_last_Postid(request, userId):
     # timestamp를 기준으로 정렬하여 가장 마지막에 저장된 모델을 가져옴.
     UserModel = OutPost.objects.filter(userId=userId).order_by('-id').first() #기본생성 id 가 가장 큰 거
@@ -123,4 +120,7 @@ def get_last_Postid(request, userId):
     else:
         # 해당 UserId에 해당하는 모델이 없을 경우 예외 처리
         return JsonResponse({'error': 'no UserId'})
+
+
+
 
