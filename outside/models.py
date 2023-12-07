@@ -10,7 +10,10 @@ class OutPost(models.Model):
     latitude = models.FloatField()  #위도
     longitude = models.FloatField()  #경도
     altitude = models.FloatField()  #고도
-    eunRotation = models.FloatField()  #회전각도
+    eunRotationX = models.FloatField(default=0.0)
+    eunRotationY = models.FloatField(default=0.0)
+    eunRotationZ = models.FloatField(default=0.0)
+    eunRotationW = models.FloatField(default=0.0)  # 회전각도
     open = models.CharField(max_length=7)   #전체공개:public  친구공개:friend  나만:private
 
 class OutText(models.Model):

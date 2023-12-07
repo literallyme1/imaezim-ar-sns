@@ -37,7 +37,17 @@ def MemoInfo(request):  #메모 정보 모두 받아오기
     if request.method == 'GET':
         queryset = OutPost.objects.all()
         serializer_class = OutMemoInfoSerializer(queryset, many=True)
-        return JsonResponse(serializer_class.data, safe=False)
+
+        # 직렬화된 데이터를 Python 딕셔너리로 변환
+        serialized_data = serializer_class.data
+
+        # 각 객체에 대해 userId의 nickname을 추가
+        for item in serialized_data:
+            user_id = item['userId']
+            user_instance = User.objects.get(pk=user_id)
+            nickname = user_instance.nickname
+            item['nickname'] = nickname
+    return JsonResponse(serialized_data, safe=False)
 
 def addMemo(request):  #새로운 메모 저장하기
     if request.method == 'POST':
@@ -85,7 +95,11 @@ def addMemo(request):  #새로운 메모 저장하기
                 latitude=data.get('latitude'),
                 longitude=data.get('longitude'),
                 altitude=data.get('altitude'),
-                eunRotation=data.get('eunRotation'),
+                # eunRotation=data.get('eunRotation'),
+                eunRotationX=data.get('eunRotationX'),
+                eunRotationY=data.get('eunRotationY'),
+                eunRotationZ=data.get('eunRotationZ'),
+                eunRotationW=data.get('eunRotationW'),
                 open=data.get('open'),
             )
             out_post.save()
@@ -94,6 +108,18 @@ def addMemo(request):  #새로운 메모 저장하기
             return JsonResponse({'status': 'error', 'message': error_message}) #post 저장 실패 시 오류 메시지
 
         return JsonResponse({'status': 'success'}) #저장 성공시 메시지
+
+def get_last_Postid(request, userId):
+    # timestamp를 기준으로 정렬하여 가장 마지막에 저장된 모델을 가져옴.
+    UserModel = OutPost.objects.filter(userId=userId).order_by('-id').first() #기본생성 id 가 가장 큰 거
+
+    if UserModel:
+        # 가장 마지막에 저장된 모델의 속성 값을 반환
+        result = {'id': UserModel.id}
+        return JsonResponse(result)
+    else:
+        # 해당 UserId에 해당하는 모델이 없을 경우 예외 처리
+        return JsonResponse({'error': 'no UserId'})
 
 
 
