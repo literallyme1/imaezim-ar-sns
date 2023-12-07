@@ -14,7 +14,7 @@ class CombinedPostView(ListAPIView):
         out_posts = OutPost.objects.all()
         in_posts = InPost.objects.all()
 
-        combined_posts = list(out_posts) + list(in_posts)
+        combined_posts = list(out_posts) + list(in_posts)   
         combined_posts.sort(key=lambda post: post.date, reverse=True) #최근 올린 메모순으로
 
         return combined_posts
