@@ -83,7 +83,8 @@ def addMemo(request):  #새로운 메모 저장하기
 
         # 클라이언트에게 받은 userId에 해당하는 user 찾기
         try :
-            user_instance = User.objects.get(id=int(data.get('userId')))
+            # user_instance = User.objects.get(id=int(data.get('userId')))
+            user_instance = User.objects.get(email=data.get('userId'))
         except ObjectDoesNotExist:
             return JsonResponse({'status': 'error', 'message': 'No member information'})   #user 정보가 존재하지 않을 때 오류 메시지
         #post 데이터 저장
@@ -121,6 +122,7 @@ def get_last_Postid(request, email):
     else:
         # 해당 UserId에 해당하는 모델이 없을 경우 예외 처리
         return JsonResponse({'error': 'no UserId'})
+
 
 
 
