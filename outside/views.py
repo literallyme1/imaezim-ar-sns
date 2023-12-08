@@ -55,7 +55,7 @@ def MemoInfo(request):  #메모 정보 모두 받아오기
                 image_path = picture_instance.picture.path  # 이미지 파일의 실제 경로
                 with open(image_path, 'rb') as image_file:
                     image_bytes = image_file.read()
-                    image_base64 = base64.b64encode(image_bytes).decode('utf-8')
+                    image_base64 = base64.b64encode(image_bytes)
                     item['picture'] = image_base64
 
     return JsonResponse(serialized_data, safe=False)
