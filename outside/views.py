@@ -110,9 +110,9 @@ def addMemo(request):  #새로운 메모 저장하기
 
         return JsonResponse({'status': 'success'}) #저장 성공시 메시지
 
-def get_last_Postid(request, userId):
-    # timestamp를 기준으로 정렬하여 가장 마지막에 저장된 모델을 가져옴.
-    UserModel = OutPost.objects.filter(userId=userId).order_by('-id').first() #기본생성 id 가 가장 큰 거
+def get_last_Postid(request, email):
+    user = User.objects.get(email=email) 
+    UserModel = OutPost.objects.filter(userId=user).order_by('-id').first() #기본생성 id 가 가장 큰 거
 
     if UserModel:
         # 가장 마지막에 저장된 모델의 속성 값을 반환
