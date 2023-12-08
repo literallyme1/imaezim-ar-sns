@@ -47,6 +47,15 @@ def MemoInfo(request):  #메모 정보 모두 받아오기
             user_instance = User.objects.get(pk=user_id)
             nickname = user_instance.nickname
             item['nickname'] = nickname
+
+            if item['memoType'] == 'B':
+                object_Number = item['objectNumber']
+                picture_instance = OutPicture.objects.get(pk=object_Number)
+                image_path = picture_instance.picture.path  # 이미지 파일의 실제 경로
+                with open(image_path, 'rb') as image_file:
+                    image_bytes = image_file.read()
+                    item['picture'] = image_bytes
+
     return JsonResponse(serialized_data, safe=False)
 
 def addMemo(request):  #새로운 메모 저장하기
