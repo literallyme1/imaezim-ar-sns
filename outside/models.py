@@ -3,6 +3,7 @@ from common.models import User
 
 # Create your models here.
 class OutPost(models.Model):
+    # id = models.AutoField(primary_key=True)
     userId = models.ForeignKey(User, on_delete=models.CASCADE)
     date = models.DateTimeField(auto_now_add=True)  #날짜 자동으로 현재시각 저장
     memoType = models.CharField(max_length=1) #A:text  B:picture  C:record   D:video
