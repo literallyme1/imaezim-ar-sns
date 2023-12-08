@@ -101,7 +101,7 @@ def addMemo(request):  #새로운 메모 저장하기
                 eunRotationY=data.get('eunRotationY'),
                 eunRotationZ=data.get('eunRotationZ'),
                 eunRotationW=data.get('eunRotationW'),
-                open=data.get('open'),
+                # open=data.get('open'),
             )
             out_post.save()
         except IntegrityError as e:
