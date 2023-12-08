@@ -107,6 +107,7 @@ def addMemo(request):  #새로운 메모 저장하기
             out_post.save()
         except IntegrityError as e:
             error_message = str(e)
+            print("not post")
             return JsonResponse({'status': 'error', 'message': error_message}) #post 저장 실패 시 오류 메시지
 
         return JsonResponse({'status': 'success'}) #저장 성공시 메시지
