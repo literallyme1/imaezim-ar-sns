@@ -49,14 +49,6 @@ def MemoInfo(request):  #메모 정보 모두 받아오기
             nickname = user_instance.nickname
             item['nickname'] = nickname
 
-            if item['memoType'] == 'B':
-                object_Number = item['objectNumber']
-                picture_instance = OutPicture.objects.get(pk=object_Number)
-                image_path = picture_instance.picture.path  # 이미지 파일의 실제 경로
-                with open(image_path, 'rb') as image_file:
-                    image_bytes = image_file.read()
-                    image_base64 = base64.b64encode(image_bytes)
-                    item['picture'] = image_base64
 
     return JsonResponse(serialized_data, safe=False)
 
@@ -129,6 +121,19 @@ def get_last_Postid(request, email):
     if UserModel:
         # 가장 마지막에 저장된 모델의 속성 값을 반환
         result = {'id': UserModel.id}
+        return JsonResponse(result)
+    else:
+        # 해당 UserId에 해당하는 모델이 없을 경우 예외 처리
+        return JsonResponse({'error': 'no UserId'})
+
+def get_last_Image(request, email):
+    user = User.objects.get(email=email) 
+    UserModel = OutPost.objects.filter(userId=user).order_by('-id').first() #기본생성 id 가 가장 큰 거
+
+    imageModel = OutPicture.objects.get(id = UserModel.objectNumber)
+    if UserModel:
+        # 가장 마지막에 저장된 모델의 속성 값을 반환
+        result = {'picture': imageModel.picture.url}
         return JsonResponse(result)
     else:
         # 해당 UserId에 해당하는 모델이 없을 경우 예외 처리
