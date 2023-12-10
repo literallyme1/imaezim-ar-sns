@@ -16,5 +16,6 @@ urlpatterns = [
     path('addMemo/', views.addMemo),  #메모 저장 url
     path('get_last_Postid/<str:email>/', views.get_last_Postid),
     path('get_last_Image/<str:email>/', views.get_last_Image),
+    path('get_last_Video/<str:email>/', views.get_last_Video),
 ]
 

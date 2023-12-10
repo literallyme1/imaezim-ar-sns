@@ -140,6 +140,19 @@ def get_last_Image(request, email):
         return JsonResponse({'error': 'no UserId'})
 
 
+def get_last_Video(request, email):
+    user = User.objects.get(email=email) 
+    UserModel = OutPost.objects.filter(userId=user).order_by('-id').first() #기본생성 id 가 가장 큰 거
+
+    imageModel = OutVideo.objects.get(id = UserModel.objectNumber)
+    if UserModel:
+        # 가장 마지막에 저장된 모델의 속성 값을 반환
+        result = {'video': imageModel.video.url}
+        return JsonResponse(result)
+    else:
+        # 해당 UserId에 해당하는 모델이 없을 경우 예외 처리
+        return JsonResponse({'error': 'no UserId'})
+
 
 
 
