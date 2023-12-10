@@ -48,6 +48,10 @@ def MemoInfo(request):  #메모 정보 모두 받아오기
             user_instance = User.objects.get(pk=user_id)
             nickname = user_instance.nickname
             item['nickname'] = nickname
+            if item['memoType'] == 'C':
+                objectNumber = item['objectNumber']
+                video = OutVideo.objects.get(pk = objectNumber)
+                item['video'] = video.video.url
 
 
     return JsonResponse(serialized_data, safe=False)
@@ -71,9 +75,9 @@ def addMemo(request):  #새로운 메모 저장하기
             file = request.FILES['memo_content']
             if not file.name.lower().endswith(('.m4a', '.mp4')): #파일이 음성 확장자인지 확인
                 return JsonResponse({'status': 'error', 'message': 'Not an audio extension'})
-            out_record = OutVideo.objects.create(video=file)
-            out_record.save()
-            saved_id = out_record.id
+            out_video = OutVideo.objects.create(video=file)
+            out_video.save()
+            saved_id = out_video.id
         elif data.get('memoType') == 'D':
             file = request.FILES['memo_content']
             if not file.name.lower().endswith(('.mp4')): #파일이 영상 확장자인지 확인
@@ -144,10 +148,10 @@ def get_last_Video(request, email):
     user = User.objects.get(email=email) 
     UserModel = OutPost.objects.filter(userId=user).order_by('-id').first() #기본생성 id 가 가장 큰 거
 
-    imageModel = OutVideo.objects.get(id = UserModel.objectNumber)
+    videoModel = OutVideo.objects.get(id = UserModel.objectNumber)
     if UserModel:
         # 가장 마지막에 저장된 모델의 속성 값을 반환
-        result = {'video': imageModel.video.url}
+        result = {'video': videoModel.video.url}
         return JsonResponse(result)
     else:
         # 해당 UserId에 해당하는 모델이 없을 경우 예외 처리
