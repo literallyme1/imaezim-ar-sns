@@ -37,7 +37,16 @@ def MemoInfo(request):  #메모 정보
     if request.method == 'GET':
         queryset = InPost.objects.all()
         serializer_class = InMemoInfoSerializer(queryset, many=True)
-        return JsonResponse(serializer_class.data, safe=False)
+        # 직렬화된 데이터를 Python 딕셔너리로 변환
+        serialized_data = serializer_class.data
+
+        # 각 객체에 대해 userId의 nickname을 추가
+        for item in serialized_data:
+            user_id = item['userId']
+            user_instance = User.objects.get(pk=user_id)
+            nickname = user_instance.nickname
+            item['nickname'] = nickname
+    return JsonResponse(serializer_class.data, safe=False)
 
 def addMemo(request):  #새로운 메모 저장하기
     if request.method == 'POST':
