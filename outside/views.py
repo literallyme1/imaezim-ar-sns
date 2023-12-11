@@ -74,7 +74,7 @@ def addMemo(request):  #새로운 메모 저장하기
             saved_id = out_picture.id
         elif data.get('memoType') == 'C':
             file = request.FILES['memo_content']
-            if not file.name.lower().endswith(('.m4a', '.mp4')): #파일이 음성 확장자인지 확인
+            if not file.name.lower().endswith(('.m4a', '.mp3')): #파일이 음성 확장자인지 확인
                 return JsonResponse({'status': 'error', 'message': 'Not an audio extension'})
             out_record = OutRecord.objects.create(record=file)
             out_record.save()
