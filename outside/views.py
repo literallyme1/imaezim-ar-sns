@@ -48,10 +48,11 @@ def MemoInfo(request):  #메모 정보 모두 받아오기
             user_instance = User.objects.get(pk=user_id)
             nickname = user_instance.nickname
             item['nickname'] = nickname
+        """
             if item['memoType'] == 'C':
                 objectNumber = item['objectNumber']
                 video = OutVideo.objects.get(pk = objectNumber)
-                item['video'] = video.video.url
+                item['video'] = video.video.url """
 
 
     return JsonResponse(serialized_data, safe=False)
@@ -75,9 +76,12 @@ def addMemo(request):  #새로운 메모 저장하기
             file = request.FILES['memo_content']
             if not file.name.lower().endswith(('.m4a', '.mp4')): #파일이 음성 확장자인지 확인
                 return JsonResponse({'status': 'error', 'message': 'Not an audio extension'})
-            out_video = OutVideo.objects.create(video=file)
-            out_video.save()
-            saved_id = out_video.id
+            out_record = OutRecord.objects.create(record=file)
+            out_record.save()
+            saved_id = out_record.id
+            #out_video = OutVideo.objects.create(video=file)
+            #out_video.save()
+            #saved_id = out_video.id
         elif data.get('memoType') == 'D':
             file = request.FILES['memo_content']
             if not file.name.lower().endswith(('.mp4')): #파일이 영상 확장자인지 확인
@@ -90,7 +94,7 @@ def addMemo(request):  #새로운 메모 저장하기
 
         # 클라이언트에게 받은 userId에 해당하는 user 찾기
         try :
-            # user_instance = User.objects.get(id=int(data.get('userId')))
+            #user_instance = User.objects.get(id=int(data.get('userId')))
             user_instance = User.objects.get(email=data.get('userId'))
         except ObjectDoesNotExist:
             return JsonResponse({'status': 'error', 'message': 'No member information'})   #user 정보가 존재하지 않을 때 오류 메시지
