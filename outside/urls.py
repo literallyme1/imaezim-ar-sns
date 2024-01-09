@@ -17,5 +17,7 @@ urlpatterns = [
     path('get_last_Postid/<str:email>/', views.get_last_Postid),
     path('get_last_Image/<str:email>/', views.get_last_Image),
     path('get_last_Video/<str:email>/', views.get_last_Video),
+    path('comment/', views.Comment),  #댓글 조회 -> postId에 해당하는 댓글만 보냄
+
 ]
 

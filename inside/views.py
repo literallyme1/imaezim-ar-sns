@@ -103,3 +103,13 @@ def addMemo(request):  #새로운 메모 저장하기
             return JsonResponse({'status': 'error', 'message': error_message}) #post 저장 실패 시 오류 메시지
 
         return JsonResponse({'status': 'success'}) #저장 성공시 메시지
+
+def Comment(request):  #postId 받아서 postId에 해당하는 댓글만 보냄
+    if request.method == 'POST':
+        data = request.POST
+        PostId = data.get('postId')
+        if PostId is None:
+            return JsonResponse({'error': 'no PostId'})
+        comments = InComment.objects.filter(postId=PostId).order_by('-date')
+        serializer_class = InCommentSerializer(comments, many=True)
+        return JsonResponse(serializer_class.data, safe=False)

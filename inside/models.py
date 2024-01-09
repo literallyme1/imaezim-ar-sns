@@ -27,6 +27,6 @@ class InVideo(models.Model):
 
 class InComment(models.Model):
     content = models.TextField()
-    date = models.DateField(auto_now_add=True)  #날짜 자동으로 현재시각 저장
+    date = models.DateTimeField(auto_now_add=True)  #날짜 자동으로 현재시각 저장
     postId = models.ForeignKey(InPost, on_delete=models.CASCADE)
     userId = models.ForeignKey(User, on_delete=models.CASCADE)

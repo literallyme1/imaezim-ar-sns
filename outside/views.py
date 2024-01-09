@@ -161,6 +161,16 @@ def get_last_Video(request, email):
         # 해당 UserId에 해당하는 모델이 없을 경우 예외 처리
         return JsonResponse({'error': 'no UserId'})
 
+def Comment(request):  #postId 받아서 postId에 해당하는 댓글만 보냄
+    if request.method == 'POST':
+        data = request.POST
+        PostId = data.get('postId')
+        if PostId is None:
+            return JsonResponse({'error': 'no PostId'})
+        comments = OutComment.objects.filter(postId=PostId).order_by('-date')
+        serializer_class = OutCommentSerializer(comments, many=True)
+        return JsonResponse(serializer_class.data, safe=False)
+
 
 
 
