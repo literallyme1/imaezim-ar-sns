@@ -56,6 +56,7 @@ INSTALLED_APPS = [
     'outside',
     'inside',
     'SNS',
+    'object',
 ]
 
 MIDDLEWARE = [
