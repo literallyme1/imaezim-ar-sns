@@ -30,20 +30,20 @@ def filter_matching_features_orb(all_features):
     return filtered_features
 
 #물건 조회
-def findObj(target):
+def findObj(target_desc):
     obj_id = [] #저장된 물건 id
     most_similar_obj_num = -1  # 가장 비슷한 물체 번호
     most_similar_obj_num_decs = -1  # 가장 많은 특징점 수
-    target_desc = target[0]
-    print(target_desc)
+    #target_desc = target[0]
+    #print(target_desc)
     # 저장 완료된 물체에서만 검색
     for i, object in enumerate([obj for obj in ObjectDesc.objects.all() if obj.registration_completed == True]):
-        print(i)
+        #print(i)
         desc_path = object.desc.path
-        print(desc_path)
+        #print(desc_path)
         obj_id.append(object.id)
         npy_desc = np.load(desc_path)
-        print(npy_desc)
+        #print(npy_desc)
 
         goodMatch = goodMatch_orb(target_desc, npy_desc)
         if most_similar_obj_num_decs < goodMatch:
