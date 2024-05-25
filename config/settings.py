@@ -57,6 +57,7 @@ INSTALLED_APPS = [
     'inside',
     'SNS',
     'object',
+    'quiz',
 ]
 
 MIDDLEWARE = [
