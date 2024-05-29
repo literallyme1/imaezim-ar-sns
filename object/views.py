@@ -12,6 +12,7 @@ from .serializers import ObjectDescSerializer, ObjTextSerializer
 from django.conf import settings
 import os
 import uuid
+from concurrent.futures import ThreadPoolExecutor, as_completed
 
 
 class Desc_drf(viewsets.ModelViewSet):
@@ -22,6 +23,70 @@ class Text_drf(viewsets.ModelViewSet):
     queryset = ObjText.objects.all()
     serializer_class = ObjTextSerializer
 
+def process_image(file):
+    nparr = np.fromstring(file.read(), np.uint8)
+    image = cv2.imdecode(nparr, cv2.IMREAD_COLOR)
+    # 이미지 크기 조정
+    height, width, _ = image.shape
+    max_length = max(height, width)
+    if max_length >= 1400:
+        ratio = 1400 / max_length
+        image = cv2.resize(image, (int(width * ratio), int(height * ratio)), interpolation=cv2.INTER_AREA)
+    image_result = remove(image)  # 배경 제거
+    return image_result
+
+def addObj(request):
+    if request.method == 'POST':
+        file_list = [request.FILES.get(f'obj_img{i}') for i in range(1, 11) if f'obj_img{i}' in request.FILES]
+        
+        detector_orb = cv2.ORB_create()
+        all_features = []
+
+        with ThreadPoolExecutor() as executor:
+            future_to_file = {executor.submit(process_image, file): file for file in file_list}
+            for future in as_completed(future_to_file):
+                file = future_to_file[future]
+                try:
+                    image_result = future.result()
+                    _, desc = detector_orb.detectAndCompute(image_result, None)
+                    all_features.append(desc)
+                except Exception as exc:
+                    return JsonResponse({'status': 'error', 'message': str(exc)})
+        
+        if not all_features:
+            return JsonResponse({'status': 'No features found'})
+
+        first_features = all_features[0]
+        filtered_features = descriptor.filter_matching_features_orb(all_features)
+        if filtered_features.shape[0] < 2500:
+            return JsonResponse({'status': 'Few feature points'}) 
+
+        old_obj_id = descriptor.findObj(first_features)
+
+        desc_filename = str(uuid.uuid4()) + ".npy"
+        desc_filepath = os.path.join(settings.MEDIA_ROOT, 'obj_desc', desc_filename)
+        os.makedirs(os.path.dirname(desc_filepath), exist_ok=True)
+        np.save(desc_filepath, filtered_features)
+
+        try:
+            obj_desc = ObjectDesc(
+                desc=desc_filepath,
+                img=file_list[0],
+            )
+            obj_desc.save()
+        except IntegrityError as e:
+            return JsonResponse({'status': 'error', 'message': str(e)})
+
+        old_obj_img = ""
+        if old_obj_id != -1:
+            old_desc = ObjectDesc.objects.get(id=old_obj_id)
+            old_obj_img = old_desc.img.path
+
+        return JsonResponse({'status': 'success', 'new_obj_id': obj_desc.id, 'old_obj_id': old_obj_id, 'old_obj_img': old_obj_img})
+
+    return JsonResponse({'status': 'error', 'message': 'Invalid request method'})
+
+"""
 # Create your views here.
 def addObj(request):
     if request.method == 'POST':
@@ -80,7 +145,7 @@ def addObj(request):
         old_desc = ObjectDesc.objects.get(id=old_obj_id)
         old_obj_img = old_desc.img.path
     return JsonResponse({'status': 'success', 'new_obj_id': obj_desc.id, 'old_obj_id': old_obj_id, 'old_obj_img': old_obj_img})  # 저장 성공시 메시지
-
+"""
 def addText(request):
     if request.method == 'POST':
         data = request.POST
