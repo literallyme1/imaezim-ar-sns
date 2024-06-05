@@ -28,4 +28,5 @@ urlpatterns = [
     path('sns/', include('SNS.urls')),
     path('object/', include('object.urls')),
     path('quiz/',include('quiz.urls')),
+    path('stadium/', include('stadium.urls')),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)  #파일 url
