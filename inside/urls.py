@@ -14,4 +14,5 @@ urlpatterns = [
     path('', include(router.urls)),
     path('memoInfo/', views.MemoInfo),  #메모 정보 url -> post 데이터와 각 메모타입에 따라 내용 추가해서 보여줌
     path('addMemo/', views.addMemo),  # 메모 저장 url
+    path('comment/', views.Comment),  #댓글 조회 -> postId에 해당하는 댓글만 보냄
 ]
