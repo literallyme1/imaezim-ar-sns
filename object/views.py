@@ -42,7 +42,7 @@ def addObj(request):
         detector_orb = cv2.ORB_create()
         all_features = []
 
-        with ThreadPoolExecutor() as executor:
+        with ThreadPoolExecutor(max_workers=10) as executor:
             future_to_file = {executor.submit(process_image, file): file for file in file_list}
             for future in as_completed(future_to_file):
                 file = future_to_file[future]
