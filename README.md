@@ -25,7 +25,7 @@
 <p align="center">
   <img src="./docs/images/system.png"
        alt="전체 시스템 아키텍처"
-       width="800">
+       width="600">
 </p>
 
 
@@ -45,7 +45,7 @@
 <p align="center">
   <img src="./docs/images/ar_outside.png"
        alt="GPS 기반 실외 AR 메모"
-       width="800">
+       width="600">
 </p>
 
 - GPS와 Geospatial API를 이용해 실제 위치에 텍스트, 사진, 음성, 영상 AR 메모 배치
@@ -58,7 +58,7 @@
 <p align="center">
   <img src="./docs/images/outside_diagram.png"
        alt="GPS 기반 실외 AR 메모"
-       width="800">
+       width="600">
 </p>
 
 </details>
@@ -68,7 +68,7 @@
 <p align="center">
   <img src="./docs/images/ar_quiz.png"
        alt="AR 퀴즈 진행 화면"
-       width="800">
+       width="600">
 </p>
 
 - 경복궁의 특정 GPS 좌표에 문제와 정답을 가진 3D 퀴즈 오브젝트 배치
@@ -83,7 +83,7 @@
 <p align="center">
   <img src="./docs/images/ar_game.png"
        alt="Photon 기반 2인용 AR 게임"
-       width="800">
+       width="600">
 </p>
 
 - ARCore Plane Tracking으로 현실 평면에 2인용 게임 경기장 배치
@@ -96,7 +96,7 @@
 <p align="center">
   <img src="./docs/images/game_diagram.png"
        alt="Photon 기반 2인용 AR 게임"
-       width="800">
+       width="600">
 </p>
 
 </details>
