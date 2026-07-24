@@ -127,13 +127,6 @@
       <sub>Unity / Android</sub>
     </td>
     <td align="center">
-      <a href="https://github.com/imyoonsoo">
-        <img src="https://github.com/imyoonsoo.png" width="90">
-      </a><br>
-      <b>서윤수</b><br>
-      <sub>Unity / Android</sub>
-    </td>
-    <td align="center">
       <a href="https://github.com/daeun408">
         <img src="https://github.com/daeun408.png" width="90">
       </a><br>
@@ -145,6 +138,13 @@
         <img src="https://github.com/AJ04K.png" width="90">
       </a><br>
       <b>전은채</b><br>
+      <sub>Unity / Android</sub>
+    </td>
+    <td align="center">
+      <a href="https://github.com/imyoonsoo">
+        <img src="https://github.com/imyoonsoo.png" width="90">
+      </a><br>
+      <b>서윤수</b><br>
       <sub>Unity / Android</sub>
     </td>
   </tr>
